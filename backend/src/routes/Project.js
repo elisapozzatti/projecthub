@@ -1,6 +1,6 @@
 import Router from "koa-router";
 import Project from "../models/Project.js";
-import authMiddleware from "./middleware/auth.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = new Router({
   prefix: "/projects",
