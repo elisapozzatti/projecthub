@@ -18,6 +18,8 @@ function Homepage() {
   const [add, setAdd] = useState(false);
   const [edit, setEdit] = useState(false);
 
+  useAutoLogout(5 * 60 * 1000);
+
   useEffect(() => {
     if (user) {
       axios
