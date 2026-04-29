@@ -1,12 +1,13 @@
 import Router from "koa-router";
 import Project from "../models/Project.js";
+import authMiddleware from "./middleware/auth.js";
 
 const router = new Router({
   prefix: "/projects",
 });
 
 //get projects by org
-router.get("/", async (ctx) => {
+router.get("/", authMiddleware, async (ctx) => {
   const { organizationId } = ctx.query;
 
   if (!organizationId) {
@@ -19,7 +20,7 @@ router.get("/", async (ctx) => {
 });
 
 //create project
-router.post("/", async (ctx) => {
+router.post("/", authMiddleware, async (ctx) => {
   const { name, organizationId } = ctx.request.body;
 
   const newProject = new Project({ name, organizationId });
@@ -30,7 +31,7 @@ router.post("/", async (ctx) => {
 });
 
 //edit project
-router.patch("/:id", async (ctx) => {
+router.patch("/:id", authMiddleware, async (ctx) => {
   const { name } = ctx.request.body;
 
   const project = await Project.findOne({ _id: ctx.params.id });
@@ -51,7 +52,8 @@ router.patch("/:id", async (ctx) => {
   ctx.status = 200;
 });
 
-router.delete("/:id", async (ctx) => {
+//delete project
+router.delete("/:id", authMiddleware, async (ctx) => {
   const user = ctx.state.user;
 
   if (!user) {
