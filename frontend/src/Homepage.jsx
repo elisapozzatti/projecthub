@@ -36,7 +36,7 @@ function Homepage() {
   const loadTasks = async (proj) => {
     setSelectedProj(proj);
     const res = await axios.get(
-      `https://projecthub-9l9g.onrender.com/${proj._id}`,
+      `https://projecthub-9l9g.onrender.com/tasks/${proj._id}`,
     );
     setTasks(res.data);
   };
