@@ -1,6 +1,7 @@
 import Router from "koa-router";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
 const router = new Router();
 
@@ -30,7 +31,7 @@ router.post("/login", async (ctx) => {
       organizationId: user.organizationId,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" },
+    { expiresIn: "15m" },
   );
 
   ctx.body = {
