@@ -42,4 +42,6 @@ app.use(Org.allowedMethods());
 app.use(User.routes());
 app.use(User.allowedMethods());
 
-app.listen(3001, () => console.log("Backend running on port 3001"));
+app.listen(process.env.PORT || 3001, () =>
+  console.log("Backend running on port 3001"),
+);
