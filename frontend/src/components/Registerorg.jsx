@@ -11,9 +11,12 @@ function Registerorg() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:3001/organizations", {
-        name: organizationName,
-      });
+      const res = await axios.post(
+        "https://projecthub-9l9g.onrender.com/organizations",
+        {
+          name: organizationName,
+        },
+      );
       navigate("/register");
     } catch (err) {
       console.error(err);

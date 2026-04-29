@@ -21,36 +21,46 @@ function Homepage() {
   useEffect(() => {
     if (user) {
       axios
-        .get("http://localhost:3001/projects", {
+        .get("https://projecthub-9l9g.onrender.com/projects", {
           params: { organizationId: user.organizationId },
         })
         .then((res) => setProjects(res.data));
       axios
-        .get(`http://localhost:3001/organizations/${user.organizationId}`)
+        .get(
+          `https://projecthub-9l9g.onrender.com/organizations/${user.organizationId}`,
+        )
         .then((res) => setOrganization(res.data));
     }
   }, [user]);
 
   const loadTasks = async (proj) => {
     setSelectedProj(proj);
-    const res = await axios.get(`http://localhost:3001/tasks/${proj._id}`);
+    const res = await axios.get(
+      `https://projecthub-9l9g.onrender.com/${proj._id}`,
+    );
     setTasks(res.data);
   };
 
   const addProject = async (name) => {
-    const res = await axios.post("http://localhost:3001/projects", {
-      name,
-      organizationId: user.organizationId,
-    });
-    const res2 = await axios.get("http://localhost:3001/projects", {
-      params: { organizationId: user.organizationId },
-    });
+    const res = await axios.post(
+      "https://projecthub-9l9g.onrender.com/projects",
+      {
+        name,
+        organizationId: user.organizationId,
+      },
+    );
+    const res2 = await axios.get(
+      "https://projecthub-9l9g.onrender.com/projects",
+      {
+        params: { organizationId: user.organizationId },
+      },
+    );
 
     setProjects(res2.data);
   };
 
   const addTask = async (title) => {
-    await axios.post("http://localhost:3001/tasks", {
+    await axios.post("https://projecthub-9l9g.onrender.com/tasks", {
       title,
       projectId: selectedProj._id,
       organization: user.organizationId,
@@ -59,12 +69,14 @@ function Homepage() {
   };
 
   const updateTaskStatus = async (id, status) => {
-    await axios.put(`http://localhost:3001/tasks/${id}`, { status });
+    await axios.put(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
+      status,
+    });
     loadTasks(selectedProj);
   };
 
   const removeTask = async (id) => {
-    await axios.delete(`http://localhost:3001/tasks/${id}`, {
+    await axios.delete(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -73,29 +85,35 @@ function Homepage() {
   };
 
   const deleteProject = async (id) => {
-    await axios.delete(`http://localhost:3001/projects/${id}`, {
+    await axios.delete(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    const res = await axios.get(`http://localhost:3001/projects`, {
-      params: {
-        organizationId: user.organizationId,
+    const res = await axios.get(
+      `https://projecthub-9l9g.onrender.com/projects`,
+      {
+        params: {
+          organizationId: user.organizationId,
+        },
       },
-    });
+    );
     setProjects(res.data);
     setSelectedProj(null);
   };
 
   const editProject = async (name, id) => {
-    await axios.patch(`http://localhost:3001/projects/${id}`, {
+    await axios.patch(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
       name: name,
     });
-    const res = await axios.get(`http://localhost:3001/projects`, {
-      params: {
-        organizationId: user.organizationId,
+    const res = await axios.get(
+      `https://projecthub-9l9g.onrender.com/projects`,
+      {
+        params: {
+          organizationId: user.organizationId,
+        },
       },
-    });
+    );
     setProjects(res.data);
     const updatedProjects = res.data;
     const updatedProject = updatedProjects.find((p) => p._id === id);
@@ -103,7 +121,7 @@ function Homepage() {
   };
 
   const editTask = async (title, id) => {
-    await axios.patch(`http://localhost:3001/tasks/${id}`, {
+    await axios.patch(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       title: title,
     });
     loadTasks(selectedProj);

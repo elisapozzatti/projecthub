@@ -19,7 +19,9 @@ function Register() {
   useEffect(() => {
     const getOrganization = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/organizations");
+        const res = await axios.get(
+          "https://projecthub-9l9g.onrender.com/organizations",
+        );
         setOrganizations(res.data);
       } catch (err) {
         console.error(err);
@@ -40,14 +42,17 @@ function Register() {
     }
     try {
       const hash = await bcrypt.hash(password, 10);
-      const res = await axios.post("http://localhost:3001/user", {
-        name: name,
-        email: email,
-        password: hash,
-        role: selectedrole,
-        organizationName: selectedorganization,
-        organizationId: organizationId,
-      });
+      const res = await axios.post(
+        "https://projecthub-9l9g.onrender.com/user",
+        {
+          name: name,
+          email: email,
+          password: hash,
+          role: selectedrole,
+          organizationName: selectedorganization,
+          organizationId: organizationId,
+        },
+      );
       navigate("/login");
     } catch (err) {
       console.error(err);

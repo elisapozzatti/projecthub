@@ -14,10 +14,13 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:3001/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://projecthub-9l9g.onrender.com/login",
+        {
+          email,
+          password,
+        },
+      );
 
       authLogin(res.data.token);
       navigate("/homepage");
