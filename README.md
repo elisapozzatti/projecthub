@@ -1,5 +1,5 @@
 mini saas chiamata "projecthub":
-Piattaforma responsive (ancora da sviluppare) con:
+Piattaforma con:
 -sviluppo applicazione fullstack per gestione progetti e task
 -sistema di autenticazione e gestione ruoli (utente / admin)
 -CRUD completo su progetti e task
