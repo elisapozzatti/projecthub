@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://projecthub-9l9g.onrender.com",
 });
 
 // Funzione per aggiornare il token dopo il login
