@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import Sidebar from "./components/Sidebar.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import Box from "./components/Box.jsx";
+import useAutoLogout from "./hooks/UseAutoLogout.jsx";
 
 function Homepage() {
   const { user, logout } = useAuth();
