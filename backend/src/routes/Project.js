@@ -57,20 +57,19 @@ router.delete("/:id", authMiddleware, async (ctx) => {
   const user = ctx.state.user;
 
   if (!user) {
-    ctx.status = 404;
+    ctx.status = 401;
     ctx.body = { error: "Non sei autorizzato" };
     return;
   }
 
   if (user.role !== "superuser") {
-    ctx.status = 404;
+    ctx.status = 403;
     ctx.body = { error: "Non sei autorizzato (solo superuser)" };
     return;
   }
 
   const deleted = await Project.findOneAndDelete({
     _id: ctx.params.id,
-    organizationId: user.organizationId,
   });
 
   if (!deleted) {

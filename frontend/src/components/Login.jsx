@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
-import api from "../api.jsx";
+import axios from "axios";
 
 function Login() {
   const { login: authLogin, user } = useAuth();
@@ -14,10 +14,13 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await api.post("https://projecthub-9l9g.onrender.com/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://projecthub-9l9g.onrender.com/login",
+        {
+          email,
+          password,
+        },
+      );
 
       authLogin(res.data.token);
       navigate("/homepage");

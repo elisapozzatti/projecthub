@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import axios from "axios";
 
 function Registerorg() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function Registerorg() {
     e.preventDefault();
 
     try {
-      const res = await api.post(
+      const res = await axios.post(
         "https://projecthub-9l9g.onrender.com/organizations",
         {
           name: organizationName,

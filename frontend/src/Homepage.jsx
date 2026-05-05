@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import Box from "./components/Box.jsx";
 import useAutoLogout from "./hooks/UseAutoLogout.jsx";
-import api from "./api.jsx";
+import axios from "axios";
 
 function Homepage() {
   const { user, logout } = useAuth();
@@ -14,7 +14,7 @@ function Homepage() {
   const [selectedProj, setSelectedProj] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [cancel, setCancel] = useState(false);
-  const [t, setT] = useState(false);
+  const [t, setT] = useState(null);
   const [taskname, setTaskname] = useState("");
   const [add, setAdd] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -23,12 +23,12 @@ function Homepage() {
 
   useEffect(() => {
     if (user) {
-      api
+      axios
         .get("https://projecthub-9l9g.onrender.com/projects", {
           params: { organizationId: user.organizationId },
         })
         .then((res) => setProjects(res.data));
-      api
+      axios
         .get(
           `https://projecthub-9l9g.onrender.com/organizations/${user.organizationId}`,
         )
@@ -38,21 +38,21 @@ function Homepage() {
 
   const loadTasks = async (proj) => {
     setSelectedProj(proj);
-    const res = await api.get(
+    const res = await axios.get(
       `https://projecthub-9l9g.onrender.com/tasks/${proj._id}`,
     );
     setTasks(res.data);
   };
 
   const addProject = async (name) => {
-    const res = await api.post(
+    const res = await axios.post(
       "https://projecthub-9l9g.onrender.com/projects",
       {
         name,
         organizationId: user.organizationId,
       },
     );
-    const res2 = await api.get(
+    const res2 = await axios.get(
       "https://projecthub-9l9g.onrender.com/projects",
       {
         params: { organizationId: user.organizationId },
@@ -63,7 +63,7 @@ function Homepage() {
   };
 
   const addTask = async (title) => {
-    await api.post("https://projecthub-9l9g.onrender.com/tasks", {
+    await axios.post("https://projecthub-9l9g.onrender.com/tasks", {
       title,
       projectId: selectedProj._id,
       organization: user.organizationId,
@@ -72,14 +72,14 @@ function Homepage() {
   };
 
   const updateTaskStatus = async (id, status) => {
-    await api.put(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
+    await axios.put(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       status,
     });
     loadTasks(selectedProj);
   };
 
   const removeTask = async (id) => {
-    await api.delete(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
+    await axios.delete(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -88,29 +88,35 @@ function Homepage() {
   };
 
   const deleteProject = async (id) => {
-    await api.delete(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
+    await axios.delete(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    const res = await api.get(`https://projecthub-9l9g.onrender.com/projects`, {
-      params: {
-        organizationId: user.organizationId,
+    const res = await axios.get(
+      `https://projecthub-9l9g.onrender.com/projects`,
+      {
+        params: {
+          organizationId: user.organizationId,
+        },
       },
-    });
+    );
     setProjects(res.data);
     setSelectedProj(null);
   };
 
   const editProject = async (name, id) => {
-    await api.patch(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
+    await axios.patch(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
       name: name,
     });
-    const res = await api.get(`https://projecthub-9l9g.onrender.com/projects`, {
-      params: {
-        organizationId: user.organizationId,
+    const res = await axios.get(
+      `https://projecthub-9l9g.onrender.com/projects`,
+      {
+        params: {
+          organizationId: user.organizationId,
+        },
       },
-    });
+    );
     setProjects(res.data);
     const updatedProjects = res.data;
     const updatedProject = updatedProjects.find((p) => p._id === id);
@@ -118,7 +124,7 @@ function Homepage() {
   };
 
   const editTask = async (title, id) => {
-    await api.patch(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
+    await axios.patch(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       title: title,
     });
     loadTasks(selectedProj);

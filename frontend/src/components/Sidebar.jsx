@@ -79,7 +79,8 @@ function Sidebar({
               {p.name}
               {user.role === "superuser" && (
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setCancel(true);
                     setProject(p._id);
                   }}
@@ -99,7 +100,8 @@ function Sidebar({
                 </button>
               )}
               <button
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setEdit(true);
                   setProject(p._id);
                 }}
