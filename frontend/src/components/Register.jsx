@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import bcrypt from "bcryptjs";
 
 function Register() {
@@ -19,7 +19,7 @@ function Register() {
   useEffect(() => {
     const getOrganization = async () => {
       try {
-        const res = await axios.get(
+        const res = await api.get(
           "https://projecthub-9l9g.onrender.com/organizations",
         );
         setOrganizations(res.data);
@@ -42,17 +42,14 @@ function Register() {
     }
     try {
       const hash = await bcrypt.hash(password, 10);
-      const res = await axios.post(
-        "https://projecthub-9l9g.onrender.com/user",
-        {
-          name: name,
-          email: email,
-          password: hash,
-          role: selectedrole,
-          organizationName: selectedorganization,
-          organizationId: organizationId,
-        },
-      );
+      const res = await api.post("https://projecthub-9l9g.onrender.com/user", {
+        name: name,
+        email: email,
+        password: hash,
+        role: selectedrole,
+        organizationName: selectedorganization,
+        organizationId: organizationId,
+      });
       navigate("/login");
     } catch (err) {
       console.error(err);

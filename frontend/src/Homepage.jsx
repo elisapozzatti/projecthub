@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import Sidebar from "./components/Sidebar.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import Box from "./components/Box.jsx";
 import useAutoLogout from "./hooks/UseAutoLogout.jsx";
+import api from "./api.jsx";
 
 function Homepage() {
   const { user, logout } = useAuth();
@@ -23,12 +23,12 @@ function Homepage() {
 
   useEffect(() => {
     if (user) {
-      axios
+      api
         .get("https://projecthub-9l9g.onrender.com/projects", {
           params: { organizationId: user.organizationId },
         })
         .then((res) => setProjects(res.data));
-      axios
+      api
         .get(
           `https://projecthub-9l9g.onrender.com/organizations/${user.organizationId}`,
         )
@@ -38,21 +38,21 @@ function Homepage() {
 
   const loadTasks = async (proj) => {
     setSelectedProj(proj);
-    const res = await axios.get(
+    const res = await api.get(
       `https://projecthub-9l9g.onrender.com/tasks/${proj._id}`,
     );
     setTasks(res.data);
   };
 
   const addProject = async (name) => {
-    const res = await axios.post(
+    const res = await api.post(
       "https://projecthub-9l9g.onrender.com/projects",
       {
         name,
         organizationId: user.organizationId,
       },
     );
-    const res2 = await axios.get(
+    const res2 = await api.get(
       "https://projecthub-9l9g.onrender.com/projects",
       {
         params: { organizationId: user.organizationId },
@@ -63,7 +63,7 @@ function Homepage() {
   };
 
   const addTask = async (title) => {
-    await axios.post("https://projecthub-9l9g.onrender.com/tasks", {
+    await api.post("https://projecthub-9l9g.onrender.com/tasks", {
       title,
       projectId: selectedProj._id,
       organization: user.organizationId,
@@ -72,14 +72,14 @@ function Homepage() {
   };
 
   const updateTaskStatus = async (id, status) => {
-    await axios.put(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
+    await api.put(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       status,
     });
     loadTasks(selectedProj);
   };
 
   const removeTask = async (id) => {
-    await axios.delete(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
+    await api.delete(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -88,35 +88,29 @@ function Homepage() {
   };
 
   const deleteProject = async (id) => {
-    await axios.delete(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
+    await api.delete(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    const res = await axios.get(
-      `https://projecthub-9l9g.onrender.com/projects`,
-      {
-        params: {
-          organizationId: user.organizationId,
-        },
+    const res = await api.get(`https://projecthub-9l9g.onrender.com/projects`, {
+      params: {
+        organizationId: user.organizationId,
       },
-    );
+    });
     setProjects(res.data);
     setSelectedProj(null);
   };
 
   const editProject = async (name, id) => {
-    await axios.patch(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
+    await api.patch(`https://projecthub-9l9g.onrender.com/projects/${id}`, {
       name: name,
     });
-    const res = await axios.get(
-      `https://projecthub-9l9g.onrender.com/projects`,
-      {
-        params: {
-          organizationId: user.organizationId,
-        },
+    const res = await api.get(`https://projecthub-9l9g.onrender.com/projects`, {
+      params: {
+        organizationId: user.organizationId,
       },
-    );
+    });
     setProjects(res.data);
     const updatedProjects = res.data;
     const updatedProject = updatedProjects.find((p) => p._id === id);
@@ -124,7 +118,7 @@ function Homepage() {
   };
 
   const editTask = async (title, id) => {
-    await axios.patch(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
+    await api.patch(`https://projecthub-9l9g.onrender.com/tasks/${id}`, {
       title: title,
     });
     loadTasks(selectedProj);
