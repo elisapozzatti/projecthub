@@ -1,27 +1,30 @@
 import Router from "koa-router";
 import Organization from "../models/Organization.js";
+import mongoose from "mongoose";
 
 const router = new Router({
   prefix: "/organizations",
 });
 
-//get list organizations
+//route per le organizzazioni
+//get - lista organizzazioni
 router.get("/", async (ctx) => {
+  //lista di tutte le organizzazioni
   ctx.body = await Organization.find();
 });
 
-//get single organization
-import mongoose from "mongoose";
-
+//get - trova una organizzazione
 router.get("/:id", async (ctx) => {
   const { id } = ctx.params;
 
+  //controlla che l'id sia valido
   if (!mongoose.Types.ObjectId.isValid(id)) {
     ctx.status = 404;
     ctx.body = { error: "Id non valido" };
     return;
   }
 
+  //trova l'organizzazione dall'id
   const org = await Organization.findById(id);
 
   if (!org) {
@@ -33,16 +36,18 @@ router.get("/:id", async (ctx) => {
   ctx.body = org;
 });
 
-//create organization
+//post - crea una organizzazione
 router.post("/", async (ctx) => {
   const { name } = ctx.request.body;
 
   try {
+    //controlla che sia stato inserito il nome
     if (!name) {
       ctx.status = 404;
       ctx.body = { message: "Nome organizzazione obbligatorio" };
       return;
     }
+    //salva l'organizzazione
     const newOrganization = new Organization({ name });
     const savedOrganization = await newOrganization.save();
 
