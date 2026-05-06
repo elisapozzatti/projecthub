@@ -15,5 +15,5 @@ organizzazione MILKA: admin@milka.com (superuser) e mario@milka.com (userdipende
 
 i superuser sono gli unici a poter cancellare progetti o task.
 
-ancora in sviluppo la cancellazione di utenti e organizzazioni.
+ancora in sviluppo la cancellazione di utenti e organizzazioni e l'eliminazione di task e progetti.
 responsive ancora da implementare.

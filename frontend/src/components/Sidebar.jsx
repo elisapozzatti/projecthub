@@ -35,15 +35,30 @@ function Sidebar({
           marginRight: "20px",
         }}
       >
-        <h3
+        <div
           style={{
-            textTransform: "uppercase",
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {organization?.name}
-        </h3>
+          <img
+            src="/logo.png"
+            style={{
+              width: "70px",
+              height: "70px",
+            }}
+          />
+          <h3
+            style={{
+              textTransform: "uppercase",
+            }}
+          >
+            {organization?.name}
+          </h3>
+        </div>
+
         <p>
-          Nome Utente: {user.name} ({user.role})
+          {user.name} - {user.role}
         </p>
         <button
           onClick={() => setAdd(true)}

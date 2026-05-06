@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from "./Header";
 
 function Registerorg() {
   const navigate = useNavigate();
@@ -24,15 +25,16 @@ function Registerorg() {
   };
   return (
     <>
+      <Header width="200px" height="200px" />
       <form
         onSubmit={handleRegister}
         style={{
           display: "flex",
-          justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
           gap: "20px",
           height: "100vh",
+          marginTop: "10vh",
         }}
       >
         <h2>Registrazione</h2>

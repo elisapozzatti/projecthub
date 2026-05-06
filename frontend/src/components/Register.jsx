@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import bcrypt from "bcryptjs";
+import Header from "./Header";
 
 function Register() {
   const navigate = useNavigate();
@@ -61,15 +62,16 @@ function Register() {
 
   return (
     <>
+      <Header width="150px" height="150px" />
       <form
         onSubmit={handleRegister}
         style={{
           display: "flex",
-          justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
           gap: "20px",
           height: "100vh",
+          marginTop: "0",
         }}
       >
         <h2>Registrazione</h2>
